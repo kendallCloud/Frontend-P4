@@ -5,16 +5,18 @@ import Casos from './Components/Casos';
 import Departamentos from './Components/Departamentos';
 import Tramites from './Components/Tramites';
 import Trackings from './Components/Trackings';
+import Home from './Components/Home.jsx';
 import React from 'react';
 
 function CambiaModulos({ventana}) {
-  console.log("cambiaModulos "+ventana);
   switch (ventana){
-    case"Departamentos" :return <Departamentos/>;
-    case"Casos" :return <Casos/>;
-    case"Parametros" :return <Parametros/>;
-    case"Trámites" :return <Tramites/>;
-    case"Trackings" :return <Trackings/>;
+    case "Departamentos" :return <Departamentos/>;
+    case "Casos" :return <Casos/>;
+    case "Parametros" :return <Parametros/>;
+    case "Trámites" :return <Tramites/>;
+    case "Trackings" :return <Trackings/>;
+    case "X": return <Home sesion={false}/>;
+    default :return <Home sesion={true}/>;
   }
 }
 

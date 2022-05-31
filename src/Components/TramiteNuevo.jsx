@@ -9,6 +9,10 @@ const [realiza,setRealiza] = useState("");
 const [aux,setaux] = useState("");
 const [tipo,setipo] = useState("");
 
+let json = {"archivo":archivos};
+const[datos,setDatos] = useState(json);
+console.log(json);
+
   return(
     <form className="modal-card-body">
     <input type="text" className="input" placeholder="Nombre del tramite" /><br/>
@@ -59,7 +63,7 @@ const [tipo,setipo] = useState("");
                 <option>GDOC</option>
                 <option>XLSX</option>
             </select>
-            <button className="button" type="button" onClick={()=>{setarchivos(archivos => [...archivos,aux+"|"+tipo])}}><strong>+</strong></button>
+            <button className="button" type="button" onClick={()=>{setarchivos(archivos => [...archivos,aux]); setExtension(extension =>[...extension,tipo])}}><strong>+</strong></button>
         </div>
     </div>
         <p>
@@ -69,7 +73,9 @@ const [tipo,setipo] = useState("");
              return <li key={item}><strong>{item}</strong></li>;
              })
         }
-    </p>
+         </p>
+
+         <button className="button is-success">Guardar cambios</button>
 </form>);
 
 }
@@ -94,14 +100,13 @@ class Tramite extends React.Component {
         return(
             <div className={`modal ${this.state.ver}`}>
              <div className="modal-background" />
-          <div className="modal-card">
+             <div className="modal-card">
             <header className="modal-card-head">
             <p className="modal-card-title">Modificar tramite</p>
             <button className="delete" aria-label="close" />
             </header>
             <TramiteNuevo departamentos={this.props.departamentos}  />
             <footer className="modal-card-foot">
-            <button className="button is-success" onClick={this.metodo}>Guardar cambios</button>
             <button className="button"  onClick={this.metodo}>Cancelar</button>
             </footer>
         </div>

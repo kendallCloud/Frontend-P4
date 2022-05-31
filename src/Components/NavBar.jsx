@@ -1,11 +1,6 @@
 import React from 'react'
  
 class NavBar extends React.Component{
-  
-  sendDataToParent = (modulo) => { // the callback. Use a better name
-    console.log(modulo);
-    this.setState(modulo);
-  }
 
   Getventana =  (event) => {
     console.log(event.target.innerText);
@@ -13,16 +8,25 @@ class NavBar extends React.Component{
     event.preventDefault();
   }
 
+  LogOut = ()=>{
+    try{
+      fetch('http://localhost:4000/logout').then((res) => res.json())
+      .then((json) => {
+        console.log(json);
+        this.props.pasarDato("X");
+      })
+      }
+      catch (err) {
+        console.error('err', err);
+        alert(err);
+      }
+  }
+
   render() {
       return (
           <nav className="navbar" role="navigation" aria-label="main navigation">
           <div className="navbar-brand">
             <img src="http://drive.google.com/uc?export=view&id=1Px6nMpagJEU7m89vukXKV6M6mf9c7YvJ" width={112} height={28} alt="NO Carga"/>
-            <a role="button" className="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
-              <span aria-hidden="true" />
-              <span aria-hidden="true" />
-              <span aria-hidden="true" />
-            </a>
           </div>
           <div id="navbarBasicExample" className="navbar-menu">
             <div className="navbar-start">
@@ -63,7 +67,7 @@ class NavBar extends React.Component{
             <div className="navbar-end">
               <div className="navbar-item">
                 <div className="buttons">
-                  <a className="button is-danger">
+                  <a className="button is-danger" onClick={this.LogOut}>
                     <strong>Cerrar sesion</strong>
                   </a>
                 </div>

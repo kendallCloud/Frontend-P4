@@ -15,8 +15,8 @@ function CambiaModulos({ventana}) {
     case "Parametros" :return <Parametros/>;
     case "Trámites" :return <Tramites/>;
     case "Trackings" :return <Trackings/>;
-    case "X": return <Home sesion={false}/>;
-    default :return <Home sesion={true}/>;
+    case "": return <Home sesion={true}/>;
+    default :return <Home sesion={false}/>;
   }
 }
 
@@ -26,6 +26,7 @@ class App extends React.Component {
    }
 
   handleCallback = (childData) =>{
+    console.log(childData);
     this.setState({modulo:childData})
   }
 

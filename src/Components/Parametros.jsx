@@ -18,6 +18,25 @@ function ObtenerDatos(){
 
 
 }
+function NuevoDepartamento(nombre){
+  var json = {
+     dep_nombre:nombre,
+     dep_cantidadEmpleados:0,
+     dep_telefono:"",
+     dep_email:"",
+   // dep_telefono:"",
+  };
+  
+  //return json;
+  axios.post('api/departamento/agregar', json);
+}
+
+function InsertarDep(lista){
+var jsonDepas;
+lista.map(NuevoDepartamento);
+
+//empieza a insertar recorriendo jsonDepas
+}
 class Parametros extends React.Component {
     constructor() {
        ObtenerDatos();
@@ -31,6 +50,7 @@ class Parametros extends React.Component {
         this.CambioDatos=this.CambioDatos.bind(this);
         this.handleSubmit=this.handleSubmit.bind(this);
     }
+     
 
     
 
@@ -48,11 +68,14 @@ class Parametros extends React.Component {
 
     handleSubmit(){
       var json = this.state.data;
-      json = {...json,departamentos:this.state.list};
+      json = {...json,departamentos:this.state.list};// Actualiza lista de departamentos
       this.setState({json});
       console.log(json);
       axios.post('api/parametros/agregar', json);                //******** */
-      
+      var listaD=this.state.list;
+      console.log(listaD);
+      InsertarDep(listaD);
+     
       // ... submit to API or something
       
     };

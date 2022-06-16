@@ -1,6 +1,5 @@
 import React from 'react';
 import axios from 'axios';
-import  FileChooser from './FileChooser';
 import '../Styles/estilo.css';
 var totalReactPackages=[];
 //import { useState } from 'react';
@@ -32,7 +31,7 @@ function NuevoDepartamento(nombre){
 }
 
 function InsertarDep(lista){
-var jsonDepas;
+
 lista.map(NuevoDepartamento);
 
 //empieza a insertar recorriendo jsonDepas
@@ -49,6 +48,7 @@ class Parametros extends React.Component {
         this.AddtoLista=this.AddtoLista.bind(this);
         this.CambioDatos=this.CambioDatos.bind(this);
         this.handleSubmit=this.handleSubmit.bind(this);
+        this.verificar=this.verificar.bind(this);
     }
      
 
@@ -65,9 +65,22 @@ class Parametros extends React.Component {
             [event.target.name]:event.target.value
         }});
     }
+    verificar(){
+      var json=this.state.data;
+      var bandera=null;
+      //axios.get('api/parametros/par', json).then(res=>{bandera=res.data; console.log("RES: ",res.data)});
+      bandera=axios.get('api/parametros/par', json);
+      console.log(bandera);
+      if(bandera!=null){
+        axios.put('api/parametros/editar',json)
+      }else{
+        this.handleSubmit()
+      }  
+    }
 
     handleSubmit(){
       var json = this.state.data;
+      
       json = {...json,departamentos:this.state.list};// Actualiza lista de departamentos
       this.setState({json});
       console.log(json);
@@ -79,6 +92,9 @@ class Parametros extends React.Component {
       // ... submit to API or something
       
     };
+
+    
+
     render() {
       return(
           <main>
@@ -124,11 +140,11 @@ class Parametros extends React.Component {
                 </div>
             </form>
             <br/>
-            <FileChooser/>
+            
             <br/>
             <div className="field is-grouped">
             <div className="control">
-              <button className="button is-link" onClick={this.handleSubmit}>Submit</button>
+              <button className="button is-link" onClick={this.verificar}>Submit</button>
             </div>
             <div className="control">
               <button className="button is-link is-light">Cancel</button>

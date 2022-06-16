@@ -1,10 +1,26 @@
 import React from 'react';
+import axios from 'axios';
 import Departamento from './Departamento.jsx'; 
+var totalReactPackages=[];
+
+function ObtenerDatos(){
+  axios.get('api/departamento/all')
+      .then(response => {totalReactPackages=response.data
+      console.log(totalReactPackages)})
+      .catch(error => {
+          this.setState({ errorMessage: error.message });
+          console.error('There was an error!', error);
+
+      },[]);
+
+
+}
 
 class Departamentos extends React.Component {
 
   constructor() {
     super();
+    ObtenerDatos();
     this.state = {
       list:["Juan Gabriel","Josias"],
       departamentos:["juan","Maria","jose","pedro","ana","","ee34"],

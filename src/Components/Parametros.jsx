@@ -1,12 +1,29 @@
 import React from 'react';
+import axios from 'axios';
 import  FileChooser from './FileChooser';
 import '../Styles/estilo.css';
+var totalReactPackages=[];
+//import { useState } from 'react';
+//import { useEffect } from 'react';
 
+function ObtenerDatos(){
+  axios.get('api/parametros/all')
+      .then(response => {totalReactPackages=response.data
+      console.log(totalReactPackages)})
+      .catch(error => {
+          this.setState({ errorMessage: error.message });
+          console.error('There was an error!', error);
+
+      },[]);
+
+
+}
 class Parametros extends React.Component {
     constructor() {
+       ObtenerDatos();
         super();
         this.state = {
-          list:["gerencia","secretaria"],
+          list:["gerencia","secretaria","dddd"],
           aux:"",
           data:{}
         };
@@ -14,6 +31,8 @@ class Parametros extends React.Component {
         this.CambioDatos=this.CambioDatos.bind(this);
         this.handleSubmit=this.handleSubmit.bind(this);
     }
+
+    
 
     AddtoLista(){
        var nueva = this.state.list;
@@ -32,7 +51,10 @@ class Parametros extends React.Component {
       json = {...json,departamentos:this.state.list};
       this.setState({json});
       console.log(json);
+      axios.post('api/parametros/agregar', json);                //******** */
+      
       // ... submit to API or something
+      
     };
     render() {
       return(
@@ -42,20 +64,20 @@ class Parametros extends React.Component {
                 <div className="field">
                     <label className="label">Nombre oficial de la empresa</label>
                     <div className="control">
-                    <input className="input" name="Empresa" onChange={this.CambioDatos} type="text" placeholder="" />
+                    <input className="input" name="nombre" onChange={this.CambioDatos} type="text" placeholder="" />
                     </div>
                 </div>
 
                 <div className="field">
                     <label className="label">Cedula juridica</label>
                     <div className="control">
-                    <input className="input" name="Cedula" onChange={this.CambioDatos} type="text" placeholder="" />
+                    <input className="input" name="cedJuridica" onChange={this.CambioDatos} type="text" placeholder="" />
                     </div>
                 </div>
                 <div className="field">
                     <label className="label">Email</label>
                     <div className="control">
-                    <input className="input" type="email" onChange={this.CambioDatos}  name="Email" placeholder="nombre@dominio.com" />
+                    <input className="input" type="email" onChange={this.CambioDatos}  name="email" placeholder="nombre@dominio.com" />
                     </div>
                 </div>
 

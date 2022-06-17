@@ -7,15 +7,35 @@ var totalReactPackages=[];
 
 function ObtenerDatos(){
   axios.get('api/parametros/all')
-      .then(response => {totalReactPackages=response.data
-      console.log(totalReactPackages)})
+      .then(response => {totalReactPackages= response.data
+        // response.data.forEach(item =>{
+        //   totalReactPackages.push({
+        //     id: item._id,
+        //     nombre: item.par_nombre,
+        //     cedulaJur: item.par_ced_juridica,
+        //     email: item.par_email
+        //   });
+        // },[]);
+      console.log("LLEGO",totalReactPackages)})
       .catch(error => {
           this.setState({ errorMessage: error.message });
           console.error('There was an error!', error);
-
+        
       },[]);
 
+      console.log("despues",totalReactPackages);
 
+    //  var datos= totalReactPackages.map(val => {
+    //     // var datos2=totalReactPackages[val].map(Data => {
+    //       console.log("val: ",val);
+    //     // });
+    //     return val;
+    //   });
+    //   console.log("datos: ",datos);
+      
+      // const numbers = [1, 2, 3, 4, 5];
+      // const doubled = numbers.map((number) => number * 2);
+      // console.log(doubled[1]);
 }
 function NuevoDepartamento(nombre){
   var json = {
@@ -38,7 +58,6 @@ lista.map(NuevoDepartamento);
 }
 class Parametros extends React.Component {
     constructor() {
-       ObtenerDatos();
         super();
         this.state = {
           list:["gerencia","secretaria","dddd"],
@@ -49,6 +68,7 @@ class Parametros extends React.Component {
         this.CambioDatos=this.CambioDatos.bind(this);
         this.handleSubmit=this.handleSubmit.bind(this);
         this.verificar=this.verificar.bind(this);
+        ObtenerDatos();
     }
      
 
@@ -67,6 +87,7 @@ class Parametros extends React.Component {
     }
     verificar(){
       var json=this.state.data;
+      console.log(json.nombre);
       var bandera=null;
       //axios.get('api/parametros/par', json).then(res=>{bandera=res.data; console.log("RES: ",res.data)});
       bandera=axios.get('api/parametros/par', json);

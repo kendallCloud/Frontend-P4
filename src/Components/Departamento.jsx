@@ -1,13 +1,13 @@
 import React, {useState} from "react";
 import '../Styles/estilo.css';
 
-class ConfigDepartamentos extends React.Component{
+function ConfigDepartamentos (){
 
- masPuente = (event)=>{
+ const masPuente = (event)=>{
    console.log("X "+event.target.name);
   this.props.sendData(event.target.name,event.target.value);
   }
-render() {
+
     return(
          <form action="" className="modal-card-body">
  
@@ -41,12 +41,12 @@ render() {
            </div>
          <div>
             <label htmlFor="phone"></label>
-            <input type="number" className="input" id="phone" onChange={(event)=>{this.masPuente(event)}} name="phone" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" placeholder="Numero de telefono" />
+            <input type="number" className="input" id="phone" onChange={(event)=>{masPuente(event)}} name="phone" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" placeholder="Numero de telefono" />
          </div>
 
          <div className="field">
         <div className="control has-icons-left has-icons-right">
-          <input className="input is-large" name="email" type="email" onChange={(event)=>{this.masPuente(event)}} placeholder="Email" />
+          <input className="input is-large" name="email" type="email" onChange={(event)=>{masPuente(event)}} placeholder="Email" />
           <span className="icon is-left">
             <i className="fas fa-envelope fa-sm" />
           </span>
@@ -57,7 +57,6 @@ render() {
           </div>
          </form>
     );
-   }
  }
 
 function ModalForm({active}){

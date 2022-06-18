@@ -1,47 +1,38 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Caso from './Caso.jsx'; 
 import CasoNuevo from './CasoNuevo.jsx'
 
-class Casos extends React.Component {
+function Casos () {
+  const [data,setData] = useState({arrBusq:[],tramites:[]});
+  const [visible,setVisible] = useState(true);
 
-  constructor() {
-    super();
-    this.state = {
-      visible:false,
-      list:["Juan Gabriel","Josias"],
-      tramites:["juan","Maria","jose","pedro","ana","","ee34"],
-      aux:"",
-      busq:"",
-      arrBusq:[]
-    };
-  }
-
-  insertarCasos(){
+ const insertarCasos = ()=>{
     let depar = [];
-    if(this.state.arrBusq.length < 1){
+    if(typeof data != 'undefined' && typeof data.arrBusq != 'undefined'){
+        if(data.arrBusq.length < 1 || typeof data.arrBusq === 'undefined'){
 
-      for(var i = 0; i < this.state.tramites.length;i++){
-        depar.push(<Caso key={i}/>)
-      } 
+          for(var i = 0; i < data.tramites.length;i++){
+            depar.push(<Caso key={i}/>)
+          } 
+        }
+        else {
+          for(var j = 0; j < data.arrBusq.length;j++){
+            depar.push(<Caso className ="Depa" key={j}/>)
+          } 
+        }
     }
-    else {
-      for(var j = 0; j < this.state.arrBusq.length;j++){
-        depar.push(<Caso className ="Depa" key={j}/>)
-      } 
-    }
-    return depar;
+        return depar;
   }
 
-  buscarDepart(valor){
-    var sortArrray = [];
-    for (let index = 0; index < this.state.departamentos.length; index++) {
-      console.log(this.state.departamentos[index]);
-      if(this.state.departamentos[index].includes(valor)) {sortArrray.push(this.state.departamentos[index])}
-    }
-    this.setState({arrBusq:sortArrray});
-  }
+//  const buscarDepart = (valor)=>{
+//     var sortArrray = [];
+//     for (let index = 0; index < data.departamentos.length; index++) {
+//       console.log(data.departamentos[index]);
+//       if(data.departamentos[index].includes(valor)) {sortArrray.push(data.departamentos[index])}
+//     }
+//     this.setState({arrBusq:sortArrray});
+//   }
 
-    render() {
       return (
 
       <div className="container">
@@ -49,17 +40,17 @@ class Casos extends React.Component {
             <center>Casos  registrados</center>
             <div className="is flex" style={{}}>
             <input type="text" className="input" id="search" placeholder="Buscar" style={{width: '25%'}}/>
-            <button className="button is-info" onClick={() => {this.setState({visible:!this.state.visible});}}>Nuevo caso</button>
+            <button className="button is-info" onClick={() => {setVisible(!visible);}}>Nuevo caso</button>
             </div>
         </header>
         <main className="grid">
-        {this.state.visible?<CasoNuevo active={this.state.visible} tramites={this.state.tramites}/>:console.log("LOL")}
-          {this.insertarCasos()}
+        {visible?<CasoNuevo active={visible} tramites={data.tramites}/>:console.log("LOL")}
+          {insertarCasos()}
         </main>
       </div>  
       
-      );
-    }
+      )
+    
   }
 
 export default Casos;

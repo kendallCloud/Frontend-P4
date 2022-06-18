@@ -5,7 +5,7 @@ const [realiza,setRealiza] = useState("");
 const [aux,setaux] = useState("");
   return(
     <form action="" className="modal-card-body">
-    <input type="text" className="input" placeholder="Nombre del tramite" /><br/>
+    <input type="text" className="input" placeholder="Codigo del caso" /><br/>
      <div className="select">
        <select   onChange={(event) =>{setRealiza(event.target.value); console.log(realiza);}}>
        <option value="default">
@@ -37,41 +37,32 @@ const [aux,setaux] = useState("");
 
 }
 
-class Caso extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-          list:["gerencia","secretaria"],
-          aux:"",
-          ver: this.props.active?"is-active":""
-        };
-        this.metodo=this.metodo.bind(this);
-    }
+const Caso = () =>{
+  const [data,setData] = useState({tramites:[""]});
+  const [ver,setVer] = useState("is-active")
 
-    metodo(){ 
-      this.state.ver===""?this.setState({ver:"is-active"}):this.setState({ver:""})
-      console.log(this.state.ver);
+const metodo = ()=>{ 
+      ver===""?setVer("is-active"):setVer("")
+      console.log(ver);
     }
     
-    render(){
         return(
-            <div className={`modal ${this.state.ver}`}>
+            <div className={`modal ${ver}`}>
              <div className="modal-background" />
             <div className="modal-card">
             <header className="modal-card-head">
             <p className="modal-card-title">Nuevo caso</p>
             <button className="delete" aria-label="close" />
             </header>
-            <CasoNuevo tramites={this.props.tramites}  />
+            <CasoNuevo tramites={data.tramites}  />
             <footer className="modal-card-foot">
-            <button className="button is-success" onClick={this.metodo}>Guardar cambios</button>
-            <button className="button"  onClick={this.metodo}>Cancelar</button>
+            <button className="button is-success" onClick={metodo}>Guardar cambios</button>
+            <button className="button"  onClick={metodo}>Cancelar</button>
             </footer>
         </div>
         </div>
         );
        
-    }
 }
 
 export default Caso;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState }from 'react';
 import axios from 'axios';
 import Departamento from './Departamento.jsx'; 
 var totalReactPackages=[];
@@ -8,39 +8,31 @@ function ObtenerDatos(){
       .then(response => {totalReactPackages=response.data
       console.log(totalReactPackages)})
       .catch(error => {
-          this.setState({ errorMessage: error.message });
           console.error('There was an error!', error);
 
       },[]);
-
-
 }
 
-class Departamentos extends React.Component {
+function Departamentos (){
+  const [data,setData] = useState({
+    list:[],
+    departamentos:[],
+    aux:"Z",
+    busq:"Y",
+    arrBusq:[]
+  });
 
-  constructor() {
-    super();
-    ObtenerDatos();
-    this.state = {
-      list:["Juan Gabriel","Josias"],
-      departamentos:["juan","Maria","jose","pedro","ana","","ee34"],
-      aux:"",
-      busq:"",
-      arrBusq:[]
-    };
-  }
-
-  insertarDepartamentos(){
+  const insertarDepartamentos = ()=>{
     let depar = [];
-    if(this.state.arrBusq.length < 1){
+    if(data.arrBusq.length < 1){
 
-      for(var i = 0; i < this.state.departamentos.length;i++){
+      for(var i = 0; i < data.departamentos.length;i++){
         depar.push(<Departamento key={i}/>)
       } 
     }
     else {
 
-      for(var j = 0; j < this.state.arrBusq.length;j++){
+      for(var j = 0; j < data.arrBusq.length;j++){
         depar.push(<Departamento key={j}/>)
       } 
 
@@ -48,16 +40,14 @@ class Departamentos extends React.Component {
     return depar;
   }
 
-  buscarDepart(valor){
+const  buscarDepart = (valor)=>{
     var sortArrray = [];
-    for (let index = 0; index < this.state.departamentos.length; index++) {
-      console.log(this.state.departamentos[index]);
-      if(this.state.departamentos[index].includes(valor)) {sortArrray.push(this.state.departamentos[index])}
+    for (let index = 0; index < data.departamentos.length; index++) {
+      console.log(data.departamentos[index]);
+      if(data.departamentos[index].includes(valor)) {sortArrray.push(data.departamentos[index])}
     }
-      this.setState({arrBusq:sortArrray});
+      
   }
-
-    render() {
       return (
 
       <div className="container">
@@ -68,12 +58,12 @@ class Departamentos extends React.Component {
             </div>
         </header>
         <main className="grid">
-            {this.insertarDepartamentos()}
+            {insertarDepartamentos()}
         </main>
       </div>  
       
       );
-    }
+    
   }
 
 export default Departamentos;

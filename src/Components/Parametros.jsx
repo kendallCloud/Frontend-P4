@@ -1,180 +1,121 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../Styles/estilo.css';
-var totalReactPackages=[];
 //import { useState } from 'react';
 //import { useEffect } from 'react';
+ const Parametros = () => {
 
-function ObtenerDatos(){
-  axios.get('api/parametros/all')
-      .then(response => {totalReactPackages= response.data
-        // response.data.forEach(item =>{
-        //   totalReactPackages.push({
-        //     id: item._id,
-        //     nombre: item.par_nombre,
-        //     cedulaJur: item.par_ced_juridica,
-        //     email: item.par_email
-        //   });
-        // },[]);
-      console.log("LLEGO",totalReactPackages)})
-      .catch(error => {
-          this.setState({ errorMessage: error.message });
-          console.error('There was an error!', error);
-        
-      },[]);
+    const [data,setData] = useState({});
 
-      console.log("despues",totalReactPackages);
-
-    //  var datos= totalReactPackages.map(val => {
-    //     // var datos2=totalReactPackages[val].map(Data => {
-    //       console.log("val: ",val);
-    //     // });
-    //     return val;
-    //   });
-    //   console.log("datos: ",datos);
-      
-      // const numbers = [1, 2, 3, 4, 5];
-      // const doubled = numbers.map((number) => number * 2);
-      // console.log(doubled[1]);
-}
-function NuevoDepartamento(nombre){
-  var json = {
-     dep_nombre:nombre,
-     dep_cantidadEmpleados:0,
-     dep_telefono:"",
-     dep_email:"",
-   // dep_telefono:"",
-  };
+    const setearParametros = async () => {
+      try {
+        const { data } = await axios.get('api/parametros/all');
+        setData(data[0]);
+      }
   
-  //return json;
-  axios.post('api/departamento/agregar', json);
-}
-
-function InsertarDep(lista){
-
-lista.map(NuevoDepartamento);
-
-//empieza a insertar recorriendo jsonDepas
-}
-class Parametros extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-          list:["gerencia","secretaria","dddd"],
-          aux:"",
-          data:{}
-        };
-        this.AddtoLista=this.AddtoLista.bind(this);
-        this.CambioDatos=this.CambioDatos.bind(this);
-        this.handleSubmit=this.handleSubmit.bind(this);
-        this.verificar=this.verificar.bind(this);
-        ObtenerDatos();
-    }
-     
-
-    
-
-    AddtoLista(){
-       var nueva = this.state.list;
-        nueva.push(this.state.aux);
-        this.setState({nueva});   
-    }
-    CambioDatos(event){
-        this.setState({data:{
-            ...this.state.data,
-            [event.target.name]:event.target.value
-        }});
-    }
-    verificar(){
-      var json=this.state.data;
-      console.log(json.nombre);
-      var bandera=null;
-      //axios.get('api/parametros/par', json).then(res=>{bandera=res.data; console.log("RES: ",res.data)});
-      bandera=axios.get('api/parametros/par', json);
-      console.log(bandera);
-      if(bandera!=null){
-        axios.put('api/parametros/editar',json)
-      }else{
-        this.handleSubmit()
-      }  
+      catch (error) {
+        console.error('error!', error);
+  
+      }
+  
+      console.log("Component has been rendered");
     }
 
-    handleSubmit(){
-      var json = this.state.data;
-      
-      json = {...json,departamentos:this.state.list};// Actualiza lista de departamentos
-      this.setState({json});
-      console.log(json);
-      axios.post('api/parametros/agregar', json);                //******** */
-      var listaD=this.state.list;
-      console.log(listaD);
-      InsertarDep(listaD);
-     
-      // ... submit to API or something
-      
-    };
+  useEffect( () => {
+    setearParametros();
+  },[]);
 
-    
+  // const  AddtoLista =() => {
+  //   var nueva = this.state.list;
+  //   nueva.push(this.state.aux);
+  //   this.setState({ nueva });
+  // }
 
-    render() {
-      return(
-          <main>
-            <h1 className="title is-1"><center>Parametros</center></h1>
-            <form>
-                <div className="field">
-                    <label className="label">Nombre oficial de la empresa</label>
-                    <div className="control">
-                    <input className="input" name="nombre" onChange={this.CambioDatos} type="text" placeholder="" />
-                    </div>
-                </div>
+  // const verificar = () => {
+  //   var json = this.state.data;
+  //   console.log(json.nombre);
+  //   var bandera = null;
+  //   //axios.get('api/parametros/par', json).then(res=>{bandera=res.data; console.log("RES: ",res.data)});
+  //   bandera = axios.get('api/parametros/par', json);
+  //   console.log(bandera);
+  //   if (bandera != null) {
+  //     axios.put('api/parametros/editar', json)
+  //   } else {
+  //     this.handleSubmit()
+  //   }
+  // }
 
-                <div className="field">
-                    <label className="label">Cedula juridica</label>
-                    <div className="control">
-                    <input className="input" name="cedJuridica" onChange={this.CambioDatos} type="text" placeholder="" />
-                    </div>
-                </div>
-                <div className="field">
-                    <label className="label">Email</label>
-                    <div className="control">
-                    <input className="input" type="email" onChange={this.CambioDatos}  name="email" placeholder="nombre@dominio.com" />
-                    </div>
-                </div>
+  // handleSubmit() {
+  //   var json = this.state.data;
 
-                <div className="field" id="depart">
-                    <label className="label">Departamentos</label>
-                    <div className="control">
-                    <div>
-                        <input className="input" type="text" id="nombre_depar" onChange={event => this.setState({aux:event.target.value})}/>
-                        <button  className="button is-link" type="button" onClick={this.AddtoLista}><strong>+</strong></button>
-                    </div>
-                    <p>
-                    {
-                    this.state.list.map((item) => {
-                        console.log(this.state.list);
-                        return <li key={item}><strong>{item}</strong></li>;
-                      })
-                    }
-                    </p>
+  //   json = { ...json, departamentos: this.state.list };// Actualiza lista de departamentos
+  //   this.setState({ json });
+  //   console.log(json);
+  //   axios.post('api/parametros/agregar', json);                //*********/
+  //   var listaD = this.state.list;
+  //   console.log(listaD);
+  //   InsertarDep(listaD);
 
-                    </div>
-                </div>
-            </form>
-            <br/>
-            
-            <br/>
-            <div className="field is-grouped">
+  //   // ... submit to API or something
+
+  // };
+    return (
+      <main>
+        <h1 className="title is-1"><center>Parametros</center></h1>
+        <form>
+          <div className="field">
+            <label className="label">Nombre oficial de la empresa</label>
             <div className="control">
-              <button className="button is-link" onClick={this.verificar}>Submit</button>
-            </div>
-            <div className="control">
-              <button className="button is-link is-light">Cancel</button>
+              <input className="input" name="nombre" value={data.par_nombre} type="text" placeholder="" />
             </div>
           </div>
-          </main>
 
-      ) ;
-    }
+          <div className="field">
+            <label className="label">Cedula juridica</label>
+            <div className="control">
+              <input className="input" name="cedJuridica" value={data.par_ced_juridica} type="text" placeholder="" />
+            </div>
+          </div>
+          <div className="field">
+            <label className="label">Email</label>
+            <div className="control">
+              <input className="input" type="email" name="email" value={data.par_email} placeholder="nombre@dominio.com" />
+            </div>
+          </div>
+
+          <div className="field" id="depart">
+            <label className="label">Departamentos</label>
+            <div className="control">
+              <div>
+                <input className="input" type="text" id="nombre_depar"/>
+                <button className="button is-link" type="button"><strong>+</strong></button>
+              </div>
+              <p>
+                {
+                 data.par_depart.map((item) => {
+                   console.log(item);
+                   return <li key={item}><strong>{item}</strong></li>;
+                  })
+                  }
+              </p>
+
+            </div>
+          </div>
+        </form>
+        <br />
+
+        <br />
+        <div className="field is-grouped">
+          <div className="control">
+            <button className="button is-link" >Submit</button>
+          </div>
+          <div className="control">
+            <button className="button is-link is-light">Cancel</button>
+          </div>
+        </div>
+      </main>
+
+    );
   }
 
 export default Parametros;

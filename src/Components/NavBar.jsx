@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
  
 class NavBar extends React.Component{
 
@@ -39,30 +39,14 @@ class NavBar extends React.Component{
               <a className="navbar-item" onClick={this.Getventana}>
                 Casos
               </a>
+
+              <a className="navbar-item" onClick={this.Getventana}>
+                  Trackings
+              </a>
               <a className="navbar-item" onClick={this.Getventana}>
                 Parametros
               </a>
-
-              <div className="navbar-item has-dropdown is-hoverable">
-                <a className="navbar-link">
-                  Trackings
-                </a>
-                <div className="navbar-dropdown">
-                  <a className="navbar-item" >
-                    Contrataciónes
-                  </a>
-                  <a className="navbar-item" >
-                    Despidos
-                  </a>
-                  <a className="navbar-item" >
-                    Incapacidades
-                  </a>
-                  <hr className="navbar-divider" />
-                  <a className="navbar-item">
-                    otros
-                  </a>
-                </div>
-              </div>
+           </div>
             </div>
             <div className="navbar-end">
               <div className="navbar-item">
@@ -73,7 +57,6 @@ class NavBar extends React.Component{
                 </div>
               </div>
             </div>
-          </div>
         </nav>
         
       );

@@ -26,6 +26,15 @@
     margin:20px;
 
 }
+
+.TrackNode{
+    border-radius: 25px;
+    border: 4px solid black;
+    text-align: center;
+    max-width:60%;
+    margin-left:40vh;
+    margin-bottom:4vh;
+}
 .grid{
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(40vh, 1fr));

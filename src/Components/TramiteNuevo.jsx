@@ -1,19 +1,23 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 
 function TramiteNuevo({departamentos,setData}){
 
-const [archivos,setarchivos] = useState([]);
-const [extension,setExtension] = useState([]);
-const [aprueban,setAprueban] = useState([]);
-const [realiza,setRealiza] = useState("");
-const [aux,setaux] = useState("");
-const [tipo,setipo] = useState("");
+  const [dato,setDato] = useState({
+    trm_nombre:"",
+    trm_codigo:"",
+    trm_departamentosAprueban:[],              //departamentos que lo aprueban
+    trm_departamento_cod:"",               //departamento que lo realiza
+    trm_documentos:[] 
+ });
+
+ const [aux,setAux] = useState("");
 
   return(
     <form className="modal-card-body">
     <input type="text" className="input" name="name" onChange={(event) =>{setData(event.target.name,event.target.value)}} placeholder="Nombre del tramite" /><br/>
      <div className="select">
-       <select  name="depart" onChange={(event) =>{setData(event.target.name,event.target.value)}}>
+       <select  name="depart" onChange={(event) =>{setDato({trm_departamento_cod:event.target.value})}}>
        <option value="default">
           Departamento que lo realiza.
         </option>
@@ -27,20 +31,19 @@ const [tipo,setipo] = useState("");
        </div>
         <br/>
        <div className="is flex">
-       <select onChange={(event) => {setAprueban(aprueban => [...aprueban,event.target.value])}} className="select">
+       <select onChange={(event) =>{setDato({trm_departamentosAprueban:event.target.value})}} className="select">
        <option value="default">
           Deben aprobar:
         </option>
         { 
            departamentos.map((item) => {
-             console.log(aprueban);
              return <option key={item}>{item}</option>;
            })
          }
        </select>
        <ol>
        { 
-           aprueban.map((item) => {
+           departamentos.map((item) => {
              console.log(item);
              return <li key={item}>{item}</li>;
          })
@@ -49,22 +52,14 @@ const [tipo,setipo] = useState("");
        </div>
     <div className="is flex">
         <div>
-            <input className="input" type="text" onChange={(event)=>setaux(event.target.value)}  placeholder="Documento requerido"/>
-            <select className="select" onChange={(event)=> {setipo(event.target.value)}}>
-                <option value="default">tipo de archivo</option>
-                <option>PNG</option>
-                <option>JPG</option>
-                <option>PDF</option>
-                <option>DOCX</option>
-                <option>GDOC</option>
-                <option>XLSX</option>
-            </select>
-            <button className="button" type="button" onClick={()=>{setarchivos(archivos => [...archivos,aux]); setExtension(extension =>[...extension,tipo])}}><strong>+</strong></button>
+            <label className="label">Documentos requeridos</label>
+            <input className="input" type="text" onChange={(event) =>{setAux(event.target.value);console.log(aux)}}/>
+            <button className="button" type="button" onClick={()=>{setData({tram_documentos:dato.trm_documentos.push(aux)}); console.log(dato)}}><strong>+</strong></button>
         </div>
     </div>
         <p>
         {
-         archivos.map((item) => {
+         dato.trm_documentos.map((item) => {
               console.log(item);
              return <li key={item}><strong>{item}</strong></li>;
              })
@@ -74,56 +69,55 @@ const [tipo,setipo] = useState("");
 
 }
 
-class Tramite extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-          list:["gerencia","secretaria"],
-          aux:"",
-          ver: this.props.active?"is-active":"",
-          form:{
-            aprobar:[],
-            name:"X",
-            documentos:[],
-            TipoArchivos:[],
-            depart:"z"
-         }
-        };
-        this.metodo=this.metodo.bind(this);
-        this.PuenteDatos=this.PuenteDatos.bind(this)}
+function Tramite ({active}){
 
-    metodo(){ 
-      this.state.ver===""?this.setState({ver:"is-active"}):this.setState({ver:""})
-      console.log(this.state.ver);
+  const [ver,setVer] =  useState(active?"is-active":"");
+  const [departamentos,setDepart] =  useState([]);
+  const [data,setData] = useState({
+    trm_nombre:"",
+    trm_codigo:"",
+    trm_departamentosAprueban:[],              //departamentos que lo aprueban
+    trm_departamento_cod:"",               //departamento que lo realiza
+    trm_documentos:[] 
+ });
+
+  const PostTramite = async () => {
+    console.log(data);
+    try {
+      const resp = await axios.post('api/tramite/agregar',data);
     }
+    catch (error) {
+      console.error('error!', error);
 
-    PuenteDatos(key,value){
-      console.log(key+" value "+value);
-     var objeto = this.state.form;
-     objeto[key] = value;
-     this.setState({form:objeto});
-     console.log(this.state.form);
-   }
-    
-    render(){
+    }
+    console.log("Component has been rendered");
+  }
+
+// useEffect( () => {
+//   GetDepartamentos();
+// },[]);
+
+
+   const metodo = ()=>{ 
+      ver===""?setVer("is-active"):setVer("")
+    }
         return(
-            <div className={`modal ${this.state.ver}`}>
+            <div className={`modal ${ver}`}>
              <div className="modal-background" />
              <div className="modal-card">
             <header className="modal-card-head">
             <p className="modal-card-title">Modificar tramite</p>
             <button className="delete" aria-label="close" />
             </header>
-            <TramiteNuevo departamentos={this.props.departamentos} setData={this.PuenteDatos} />
+            <TramiteNuevo departamentos={departamentos} setData={setData} />
             <footer className="modal-card-foot">
-            <button className="button is-success">Guardar cambios</button>
-            <button className="button"  onClick={this.metodo}>Cancelar</button>
+            <button className="button is-success" onClick={PostTramite}>Guardar cambios</button>
+            <button className="button"  onClick={metodo}>Cancelar</button>
             </footer>
         </div>
         </div>
-        );
-       
-    }
+        );   
+    
 }
 
 export default Tramite;

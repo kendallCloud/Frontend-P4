@@ -4,7 +4,7 @@ import CasoNuevo from './CasoNuevo.jsx'
 
 function Casos () {
   const [data,setData] = useState({arrBusq:[],tramites:[]});
-  const [visible,setVisible] = useState(true);
+  const [visible,setVisible] = useState(false);
 
  const insertarCasos = ()=>{
     let depar = [];

@@ -39,20 +39,19 @@ const [aux,setaux] = useState("");
 
 const Caso = () =>{
   const [data,setData] = useState({tramites:[""]});
-  const [ver,setVer] = useState("is-active")
+  const [ver,setVer] = useState("is-active");
 
 const metodo = ()=>{ 
       ver===""?setVer("is-active"):setVer("")
       console.log(ver);
     }
-    
         return(
             <div className={`modal ${ver}`}>
              <div className="modal-background" />
             <div className="modal-card">
             <header className="modal-card-head">
             <p className="modal-card-title">Nuevo caso</p>
-            <button className="delete" aria-label="close" />
+            <button className="delete" aria-label="close" onClick={metodo}/>
             </header>
             <CasoNuevo tramites={data.tramites}  />
             <footer className="modal-card-foot">

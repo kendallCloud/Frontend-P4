@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect} from 'react';
 import axios from 'axios';
 import '../Styles/estilo.css';
 //import { useState } from 'react';
@@ -6,6 +6,7 @@ import '../Styles/estilo.css';
  const Parametros = () => {
 
     const [data,setData] = useState({});
+    const [aux,setAux] = useState("");
 
     const setearParametros = async () => {
       try {
@@ -17,7 +18,6 @@ import '../Styles/estilo.css';
         console.error('error!', error);
   
       }
-  
       console.log("Component has been rendered");
     }
 
@@ -25,11 +25,30 @@ import '../Styles/estilo.css';
     setearParametros();
   },[]);
 
-  // const  AddtoLista =() => {
-  //   var nueva = this.state.list;
-  //   nueva.push(this.state.aux);
-  //   this.setState({ nueva });
-  // }
+
+  const OrderedList = ()=>{
+
+    if(Array.isArray(data.par_depart)){ 
+      return data.par_depart.map((item) => {
+      console.log(item);
+      return <li key={item}><strong>{item}</strong></li>;
+     })}
+     else{
+      return [];
+     }
+}
+
+   const  AddtoLista = () => {
+     var nueva = data.par_depart;
+     console.log(nueva);  
+     nueva.push(aux);
+     setData({par_depar:nueva});
+   }
+
+   const  AddtoAux = (e) => {
+    setAux(e.target.value);
+  }
+
 
   // const verificar = () => {
   //   var json = this.state.data;
@@ -59,6 +78,13 @@ import '../Styles/estilo.css';
   //   // ... submit to API or something
 
   // };
+
+  const handleSubmit= (e) => {
+    e.preventDefault();
+    setData({...data,[e.target.name]: e.target.value});
+    console.log(data);
+  }
+
     return (
       <main>
         <h1 className="title is-1"><center>Parametros</center></h1>
@@ -66,20 +92,20 @@ import '../Styles/estilo.css';
           <div className="field">
             <label className="label">Nombre oficial de la empresa</label>
             <div className="control">
-              <input className="input" name="nombre" value={data.par_nombre} type="text" placeholder="" />
+              <input className="input" name="par_nombre" onChange={(event)=> handleSubmit(event)} value={data.par_nombre} type="text" placeholder="" />
             </div>
           </div>
 
           <div className="field">
             <label className="label">Cedula juridica</label>
             <div className="control">
-              <input className="input" name="cedJuridica" value={data.par_ced_juridica} type="text" placeholder="" />
+              <input className="input" name="par_ced_juridica"  onChange={(event)=> handleSubmit(event)} value={data.par_ced_juridica} type="text" placeholder="" />
             </div>
           </div>
           <div className="field">
             <label className="label">Email</label>
             <div className="control">
-              <input className="input" type="email" name="email" value={data.par_email} placeholder="nombre@dominio.com" />
+              <input className="input" type="email" name="par_email"  onChange={(event)=> handleSubmit(event)} value={data.par_email} placeholder="nombre@dominio.com" />
             </div>
           </div>
 
@@ -87,16 +113,11 @@ import '../Styles/estilo.css';
             <label className="label">Departamentos</label>
             <div className="control">
               <div>
-                <input className="input" type="text" id="nombre_depar"/>
-                <button className="button is-link" type="button"><strong>+</strong></button>
+                <input className="input" onChange={(event) => AddtoAux(event)}  name="depa" type="text" id="nombre_depar"/>
+                <button className="button is-link" onClick={() => AddtoLista()}  type="button">+</button>
               </div>
               <p>
-                {
-                 data.par_depart.map((item) => {
-                   console.log(item);
-                   return <li key={item}><strong>{item}</strong></li>;
-                  })
-                  }
+                {OrderedList()}
               </p>
 
             </div>

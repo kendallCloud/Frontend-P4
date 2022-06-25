@@ -15,9 +15,9 @@ function TramiteNuevo({departamentos,setData}){
 
   return(
     <form className="modal-card-body">
-    <input type="text" className="input" name="name" onChange={(event) =>{setData(event.target.name,event.target.value)}} placeholder="Nombre del tramite" /><br/>
+    <input type="text" className="input" name="trm_nombre" onChange={(event) =>{ setDato({...dato,trm_nombre:event.target.value});setData({dato});console.log(event.target.value)}} placeholder="Nombre del tramite" /><br/>
      <div className="select">
-       <select  name="depart" onChange={(event) =>{setDato({trm_departamento_cod:event.target.value})}}>
+       <select  name="trm_departamento_cod" onChange={(event) =>{setDato({...dato,trm_departamento_cod:event.target.value});setData({dato});  console.log(event.target.value)}}>
        <option value="default">
           Departamento que lo realiza.
         </option>
@@ -31,7 +31,7 @@ function TramiteNuevo({departamentos,setData}){
        </div>
         <br/>
        <div className="is flex">
-       <select onChange={(event) =>{setDato({trm_departamentosAprueban:event.target.value})}} className="select">
+       <select onChange={(event) =>{setDato({...dato,trm_departamentosAprueban:event.target.value})}} className="select">
        <option value="default">
           Deben aprobar:
         </option>
@@ -54,7 +54,7 @@ function TramiteNuevo({departamentos,setData}){
         <div>
             <label className="label">Documentos requeridos</label>
             <input className="input" type="text" onChange={(event) =>{setAux(event.target.value);console.log(aux)}}/>
-            <button className="button" type="button" onClick={()=>{setData({tram_documentos:dato.trm_documentos.push(aux)}); console.log(dato)}}><strong>+</strong></button>
+            <button className="button" type="button" onClick={()=>{dato.trm_documentos.push(aux); setData({...dato,trm_documentos:dato.trm_documentos}); console.log(dato.trm_documentos)}}><strong>+</strong></button>
         </div>
     </div>
         <p>
@@ -82,7 +82,7 @@ function Tramite ({active}){
  });
 
   const PostTramite = async () => {
-    console.log(data);
+    console.log("DATA ",data);
     try {
       const resp = await axios.post('api/tramite/agregar',data);
     }

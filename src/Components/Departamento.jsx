@@ -107,9 +107,10 @@ function Departamento({datos}) {
 
     return (
         <div className="Depa">
-            <p className="title is-1-small">Departamento {} informatica</p>
-            <p className="title is-2-small">Jefe {}</p>
-            <p className="subtitle">Cantidad de empleados {}</p>
+            <p className="title is-1-small">Departamento {datos.dep_nombre}</p>
+            <p className="subtitle">{datos.dep_email}</p>
+            <p className="subtitle">{datos.dep_telefono}</p>
+            <p className="subtitle">Cantidad de empleados {datos.dep_cantidadEmpleados}</p>
             <button className="button is-danger" onClick={cambiar} >Modificar</button> 
             {
               visible ? (<ModalForm active={active}/>):(console.log("false"))

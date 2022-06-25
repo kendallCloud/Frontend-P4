@@ -1,5 +1,6 @@
 import React, { useState }from 'react';
 import '../Styles/estilo.css';
+import Swal from 'sweetalert2';
 
 function TrackPiece ({estado,documento}){
   let colores = {};
@@ -7,7 +8,7 @@ function TrackPiece ({estado,documento}){
   let estMsg = "";
   switch(estado){
     case 1:
-      colores = {  border:'4px solid green'};
+      colores = {border:'4px solid green'};
       estImagen = "https://cdn-icons-png.flaticon.com/128/3472/3472620.png";
       estMsg = "CORRECTO!"; 
       
@@ -26,9 +27,34 @@ function TrackPiece ({estado,documento}){
       break;
     default:{}
   }
+  const SetFile = async () =>{
+    console.log("Clicked");
+    const { value: file } =  await Swal.fire({
+      title: 'Select image',
+      input: 'file',
+      inputAttributes: {
+        'accept': 'all/*',
+        'aria-label': 'Upload your profile picture'
+      }
+    })
+    
+    if (file) {
+      const reader = new FileReader()
+      reader.onload = (e) => {
+        Swal.fire({
+          title: 'Your uploaded picture',
+          imageUrl: e.target.result,
+          imageAlt: 'The uploaded picture'
+        })
+      }
+      reader.readAsDataURL(file)
+    }
+  }
   return(
       <div className="TrackNode" style={colores}>
-        <img src="https://cdn-icons-png.flaticon.com/128/569/569800.png" width={100} height={100} alt="archivo" /> 
+        <button onClick={() =>{SetFile()}}>
+          <img src="https://cdn-icons-png.flaticon.com/128/569/569800.png" width={100} height={100} alt="archivo" /> 
+        </button>
         <h1 className="title">{documento}</h1> 
         <div>
             <img src={estImagen} width={50} height={50} alt="estado"/>

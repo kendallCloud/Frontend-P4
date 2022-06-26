@@ -20,6 +20,17 @@ import '../Styles/estilo.css';
       }
       console.log("Component has been rendered");
     }
+    const GuardarParametros = async () => {
+        /*post de para metros
+        if(status===200){
+          recorrer lista de departamentos con un post para departamentos por cada item
+        }
+        
+        
+        */
+
+
+    }
 
   useEffect( () => {
     setearParametros();

@@ -105,16 +105,13 @@ useEffect(() => {
     NameToID()
     
     try {
-      if (data !== undefined) {
         const resp = await axios.post('api/caso/agregar', data);
         console.log(resp);
-      }
-      cerrar()
     }
     catch (error) {
       console.error('error!', error);
     }
-
+    cerrar()
   }
   return (
     <div className={`modal ${ver}`}>

@@ -101,12 +101,13 @@ function Trackings() {
   const Busqueda = async (value) => {
     console.log(value);
     try {
-      const {data} = await axios.get('api/caso/per',{
+      const {data} = await axios.get('api/caso/buscar',{
         headers: {
-          'cod':'CC001'
+          'cod':value
         }
       });
-      if (data === [] || data === undefined){
+      console.log(data);
+      if (data === [] || data === undefined || data === null || data === {}){
         Swal.fire({
           title: 'Error!',
           text: 'No se encontro el caso',

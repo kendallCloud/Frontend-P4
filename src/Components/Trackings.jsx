@@ -62,7 +62,7 @@ function TrackPiece({ estado, documento }) {
   const SetFile = async () => {
     console.log("Clicked");
     const { value: file } = await Swal.fire({
-      title: 'Select image',
+      title: 'Seleccione documento',
       input: 'file',
       inputAttributes: {
         'accept': 'all/*',

@@ -120,8 +120,8 @@ function Tramite({ active }) {
     console.log("DATA ", data);
     NameToID();
     try {
-      //const resp = await axios.post('api/caso/agregar', data);
-     // console.log(resp.data);
+      const resp = await axios.post('api/tramite/agregar', data);
+     console.log(resp.data);
       cerrar()
     }
     catch (error) {

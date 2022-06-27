@@ -32,7 +32,7 @@ function CasoNuevo({tramites,setData}) {
       <div className="is flex">
         <div>
           <label htmlFor="Inicio">Abre caso:</label>
-          <input type="date" id="Inicio"  onChange={(event) => {setDat({...dat,cso_fecha_apertura:event.target.value}); setData(dat)}} className="input" />
+          <input type="date" id="Inicio"  onChange={(event) => {console.log(event.target.value); setDat({...dat,cso_fecha_apertura:event.target.value}); setData(dat)}} className="input" />
         </div>
       </div>
       <div className="is flex">
@@ -60,7 +60,7 @@ const Caso = () => {
 
   const NameToID = ()=>{
     for(let i=0; i< tramites.length;i++){
-      if(tramites[i].cso_tramite_cod === data.trm_departamento_cod){data.trm_departamento_cod = tramites[i]._id}
+      if(tramites[i].cso_tramite_cod === data.trm_tramite_cod){data.cso_tramite_cod = tramites[i]._id}
       console.log(tramites[i].cso_tramite_cod);
     }
     console.log("DATA2 ", data);

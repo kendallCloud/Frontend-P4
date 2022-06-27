@@ -5,6 +5,41 @@ import Swal from 'sweetalert2'
 
 function Departamentos() {
   const [departas, setDepartas] = useState([]);
+  const [parametros, setParametros] = useState([]);
+
+  const setearParametros = async () => {
+    try {
+      const { data } = await axios.get('api/parametros/all');
+      setParametros(data[0]);
+    }
+
+    catch (error) {
+      console.error('error!', error);
+
+    }
+    console.log(parametros);
+    console.log("Component has been rendered");
+  }
+
+
+  const PostDepartamento = async (nombre) => {
+    let json = {
+      dep_nombre:nombre,
+      dep_cantidadEmpleados:0,
+      dep_telefono:"",
+      dep_email:"",
+    }
+    try {
+    let  resp  = await axios.post('api/departamento/agregar',json);
+    console.log(resp);
+    }
+
+    catch (error) {
+      console.error('error!', error);
+
+    }
+  }
+
   const GetDepartamentos = async () => {
     try {
       const { data } = await axios.get('api/departamento/all');
@@ -56,14 +91,27 @@ function Departamentos() {
   //     }
 
   //   }
+
+  const ActDepar = ()=> {
+    let nombres = [];
+
+    departas.forEach((element) => {
+      nombres.push(element.dep_nombre);
+    });
+
+    parametros.par_depart.forEach((element) => {
+        if(!nombres.includes(element)){//no existe un departamento con ese nombre?
+            PostDepartamento(element)
+        }
+    })
+
+  }
   return (
 
     <div className="container">
       <header className="title is-size-1">
         <center>Departamentos</center>
-        <div className="is flex" style={{}}>
-          <input type="text" className="input" id="search" placeholder="Buscar" style={{ width: '25%' }} />
-        </div>
+          <button className="button is-info" onClick={ActDepar}>Recargar departamentos</button>
       </header>
       <main className="grid">
         {insertarDepartamentos()}

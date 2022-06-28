@@ -4,7 +4,7 @@ import '../Styles/estilo.css';
 import Swal from 'sweetalert2';
 import axios from 'axios';
 import { Input, Button } from 'antd';
-import "antd/dist/antd.css";
+import 'antd/dist/antd.min.css';
 
 const { Search } = Input;
 

@@ -7,7 +7,7 @@ function CasoNuevo({tramites,setData}) {
   const [dat,setDat] = useState({
     // _id: mongoose.Types.ObjectId,
     cso_numero_caso: "",
-    cso_fecha_apertura: "",
+    cso_fecha_apertura: "dd-mm-yy",
     cso_fecha_traspaso: "",
     cso_fecha_final: "",
     cso_tramite_cod: "",
@@ -22,7 +22,6 @@ function CasoNuevo({tramites,setData}) {
           </option>
           {
             tramites.map((item) => {
-              console.log(item);
               return <option key={item.trm_nombre}>{item.trm_nombre}</option>;
             })
           }
@@ -32,7 +31,7 @@ function CasoNuevo({tramites,setData}) {
       <div className="is flex">
         <div>
           <label htmlFor="Inicio">Abre caso:</label>
-          <input type="date" id="Inicio"  onChange={(event) => {console.log(event.target.value); setDat({...dat,cso_fecha_apertura:event.target.value}); setData(dat)}} className="input" />
+          <input type="date" className="input" onChange={(event) => {setDat({...dat,cso_fecha_apertura:event.target.value}); setData(dat)}}/>
         </div>
       </div>
       <div className="is flex">
@@ -45,17 +44,17 @@ function CasoNuevo({tramites,setData}) {
 const Caso = () => {
   const [data, setData] = useState({
     // _id: mongoose.Types.ObjectId,
-    cso_numero_caso: String,
-    cso_fecha_apertura: String,
-    cso_fecha_traspaso: String,
-    cso_fecha_final: String,
-    cso_tramite_cod: String,
+    cso_numero_caso: "String",
+    cso_fecha_apertura: "String",
+    cso_fecha_traspaso: "",
+    cso_fecha_final: "String",
+    cso_tramite_cod: "String",
   });
   const [ver, setVer] = useState("is-active");
 
   const cerrar = () => {
-    ver === "" ? setVer("is-active") : setVer("")
-    console.log(ver);
+    if(ver === "") setVer("is-active")
+    else setVer("")
   }
 
   const NameToID = ()=>{
@@ -101,6 +100,7 @@ useEffect(() => {
 }, []);
 
   const PostCasoNuevo = async () => {
+    cerrar()
     console.log("DATA ", data);
     NameToID()
     
@@ -111,7 +111,6 @@ useEffect(() => {
     catch (error) {
       console.error('error!', error);
     }
-    cerrar()
   }
   return (
     <div className={`modal ${ver}`}>

@@ -1,42 +1,44 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Departamento from './Departamento.jsx';
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2';
+import ModalForm from './ConfigDepartamentos.jsx';
 
 function Departamentos() {
   const [departas, setDepartas] = useState([]);
-  const [parametros, setParametros] = useState([]);
+  const [visible, setVisible] = useState(false);
+  const active = visible ? "is-active" : "";
 
-  const setearParametros = async () => {
+  const ReqBorrar = async (index)=>{
+    console.log(departas[index]._id)
     try {
-      const { data } = await axios.get('api/parametros/all');
-      setParametros(data[0]);
+      let resp = await axios.delete('api/departamento/borrar', { data: {id:departas[index]._id}});
+      console.log(resp);
     }
-
     catch (error) {
       console.error('error!', error);
-
     }
-    console.log(parametros);
-    console.log("Component has been rendered");
+  }
+
+  const deleteItem = (index) => () =>{
+    setDepartas((departas) => departas.filter((_, i) => i !== index));
+    ReqBorrar(index);
   }
 
 
   const PostDepartamento = async (nombre) => {
     let json = {
-      dep_nombre:nombre,
-      dep_cantidadEmpleados:0,
-      dep_telefono:"",
-      dep_email:"",
+      dep_nombre: nombre,
+      dep_cantidadEmpleados: 0,
+      dep_telefono: "",
+      dep_email: "",
     }
     try {
-    let  resp  = await axios.post('api/departamento/agregar',json);
-    console.log(resp);
+      let resp = await axios.post('api/departamento/agregar', json);
+      console.log(resp);
     }
-
     catch (error) {
       console.error('error!', error);
-
     }
   }
 
@@ -77,49 +79,30 @@ function Departamentos() {
     console.log(departas);
     if (departas !== undefined) {
       for (var i = 0; i < departas.length; i++) {
-        depar.push(<Departamento key={i} datos={departas[i]} />)
-      }
+        depar.push(
+          <div>
+            <button className="delete" aria-label="close" onClick={deleteItem(i)} />
+            <Departamento key={i} datos={departas[i]} />)
+          </div>
+      )}
     }
     return depar;
   }
 
-  // const  buscarDepart = (valor)=>{
-  //     var sortArrray = [];
-  //     for (let index = 0; index < data.departamentos.length; index++) {
-  //       console.log(data.departamentos[index]);
-  //       if(data.departamentos[index].includes(valor)) {sortArrray.push(data.departamentos[index])}
-  //     }
-
-  //   }
-
-  const ActDepar = ()=> {
-    let nombres = [];
-
-    departas.forEach((element) => {
-      nombres.push(element.dep_nombre);
-    });
-
-    parametros.par_depart.forEach((element) => {
-        if(!nombres.includes(element)){//no existe un departamento con ese nombre?
-            PostDepartamento(element)
-        }
-    })
-
-  }
   return (
 
     <div className="container">
       <header className="title is-size-1">
         <center>Departamentos</center>
-          <button className="button is-info" onClick={ActDepar}>Recargar departamentos</button>
+        <button className="button is-info" onClick={() => { setVisible(!visible) }}>Nuevo departamento</button>
       </header>
       <main className="grid">
         {insertarDepartamentos()}
+        {visible ? (<ModalForm active={active} datos={{}} />) : (console.log("false"))}
       </main>
     </div>
 
   );
-
 }
 
 export default Departamentos;

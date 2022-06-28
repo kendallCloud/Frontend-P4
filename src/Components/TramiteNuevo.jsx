@@ -117,12 +117,12 @@ function Tramite({ active }) {
   }
 
   const PostTramite = async () => {
+    cerrar()
     console.log("DATA ", data);
     NameToID();
     try {
       const resp = await axios.post('api/tramite/agregar', data);
      console.log(resp.data);
-      cerrar()
     }
     catch (error) {
       console.error('error!', error);
@@ -132,7 +132,6 @@ function Tramite({ active }) {
   useEffect(() => {
     GetDepartamentos();
   }, []);
-
 
   const cerrar = () => {
     ver === "" ? setVer("is-active") : setVer("")

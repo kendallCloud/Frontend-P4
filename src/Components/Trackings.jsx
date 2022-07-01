@@ -9,7 +9,7 @@ import 'antd/dist/antd.min.css';
 const { Search } = Input;
 
 async function uploadFile(file) {
-  console.log("subiendo archivo");
+  console.log("subiendo archivo...");
   let formData = new FormData();
   formData.append("file", file);
   try {
@@ -86,7 +86,7 @@ function TrackPiece({ estado, documento }) {
   return (
     <div className="TrackNode" style={colores}>
       <button onClick={() => { SetFile() }}>
-        <img src="https://cdn-icons-png.flaticon.com/128/569/569800.png" width={100} height={100} alt="archivo" />
+        <img src="https://cdn-icons-png.flaticon.com/128/569/569800.png" width={100} height={100} alt="archivo"/>
       </button>
       <h1 className="title">{documento}</h1>
       <div>
@@ -97,17 +97,19 @@ function TrackPiece({ estado, documento }) {
   );
 }
 function Trackings() {
-  const [caso,setCaso] = useState({})
-  const Busqueda = async (value) => {
+  const [caso, setCaso] = useState({});
+  const [tramite,setTramite] = useState({});
+  const TramiteDcaso = async (value) =>{
     console.log(value);
+    if(value !== undefined) {
     try {
-      const {data} = await axios.get('api/caso/buscar',{
-        headers: {
-          'cod':value
-        }
-      });
+      const { data } = await axios.get('api/tramite/all');
       console.log(data);
-      if (data === [] || data === undefined || data === null || data === {}){
+      data.forEach(element => {
+        if(element._id === value){setTramite(element)}
+        else console.log("no");
+    });
+      if (tramite === undefined || tramite === null || tramite === {}) {
         Swal.fire({
           title: 'Error!',
           text: 'No se encontro el caso',
@@ -115,8 +117,38 @@ function Trackings() {
           confirmButtonText: 'ok'
         })
       }
-      else setCaso(data);
+    }
+    catch (error) {
+      Swal.fire({
+        title: 'Error!',
+        text: 'Fallo del sistema',
+        icon: 'error',
+        confirmButtonText: 'ok'
+      })
+      console.error('error!', error);
+    }
+  }
+  }
+
+  const Busqueda = async (value)=>{
+    console.log(value);
+    try {
+      const { data } = await axios.get('api/caso/buscar', {
+        headers: {
+          'cod':value
+        }
+      });
+      setCaso(data);
       console.log(caso);
+      if (caso === [] || caso === undefined || caso === null || caso === {}) {
+        Swal.fire({
+          title: 'Error!',
+          text: 'No se encontro el caso',
+          icon: 'error',
+          confirmButtonText: 'ok'
+        })
+      }
+      TramiteDcaso(data.cso_tramite_cod[0]);
     }
     catch (error) {
       Swal.fire({
@@ -129,6 +161,26 @@ function Trackings() {
 
     }
   }
+
+  const EncabezadoTram = ()=>{
+    console.log(tramite);
+    return tramite.trm_nombre!==undefined && tramite.trm_nombre!==null?"Tramite que realiza " + tramite.trm_nombre:"";
+  }
+
+  const EncabezadoCaso = ()=>{
+    return caso.cso_numero_caso!==undefined && caso.cso_numero_caso!==null?"Tracking al caso " + caso.cso_numero_caso:"";
+  }
+
+  const Nodes = ()=>{
+    let document = [];
+    if(tramite!=={} &&  tramite.trm_documentos !== undefined){
+      tramite.trm_documentos.forEach(element => {
+        document.push(<TrackPiece estado={3} documento={element}/>);
+      });
+    }
+    return document;
+  }
+
   return (
     <div>
       <header className="field is-horizontal">
@@ -138,9 +190,10 @@ function Trackings() {
         </Button>
       </header>
       <h1 className="title is-1"><center>Trackings</center></h1>
-      <TrackPiece estado={1} documento={"Cedula"}></TrackPiece>
-      <TrackPiece estado={2} documento={"Dictamen"}></TrackPiece>
-      <TrackPiece estado={3} documento={"Licencia"}></TrackPiece>
+      <h2 className="title is-2">{EncabezadoTram()}</h2>
+      <h3 className="title is-3">{EncabezadoCaso()}</h3>
+      
+     {Nodes()}
     </div>
 
   );

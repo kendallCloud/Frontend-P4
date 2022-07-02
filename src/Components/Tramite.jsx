@@ -1,8 +1,9 @@
 import React from "react";
 import '../Styles/estilo.css';
 function Tramite ({data}){
+
     return(
-    <div className="tramite">
+    <>
 
         <h3 className="title is-3">{data.trm_nombre}</h3>
         <h4 className="title is-4">{"realiza departamento de " + data.trm_departamento_cod}</h4>
@@ -24,7 +25,7 @@ function Tramite ({data}){
 
         </div>
 
-    </div>);
+    </>);
 
 }
 

@@ -80,9 +80,9 @@ function Departamentos() {
     if (departas !== undefined) {
       for (var i = 0; i < departas.length; i++) {
         depar.push(
-          <div>
-            <button className="delete" aria-label="close" onClick={deleteItem(i)} />
-            <Departamento key={i} datos={departas[i]} />)
+          <div className="Depa">
+            <Departamento key={i} datos={departas[i]}/>
+            <button className="button is-danger is-light" aria-label="close" onClick={deleteItem(i)}>Eliminar</button>
           </div>
       )}
     }

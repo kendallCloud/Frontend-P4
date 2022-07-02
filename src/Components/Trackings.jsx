@@ -69,7 +69,7 @@ function TrackPiece({ estado, documento }) {
         'aria-label': 'Upload your profile picture'
       }
     })
-
+    console.log(file);
     if (file) {
       const reader = new FileReader()
       reader.onload = (e) => {

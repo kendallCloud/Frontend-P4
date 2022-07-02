@@ -5,7 +5,7 @@ function Caso({data}) {
 
    const [visible,setVisible] =  useState(false);
     return (
-        <div className="Depa">
+        <>
             <p className="title is-1-small">Caso {data.cso_numero_caso}</p>
             <p className="title is-2-small">Fecha de apertura {data.cso_fecha_apertura}</p>
             <p className="subtitle">Fecha de cierre del caso {data.cso_fecha_traspaso}</p>  
@@ -13,7 +13,7 @@ function Caso({data}) {
         <div>
 
             </div>
-        </div> 
+        </> 
 
     );
 

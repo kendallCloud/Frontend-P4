@@ -38,13 +38,34 @@ function Casos() {
   }
   useEffect(() => {
     GetCasos();
-  },[]);
+  }, []);
+
+  const Borrar = async (index) => {
+    console.log(casos[index]._id)
+    try {
+      let resp = await axios.delete('api/caso/borrar', { data: { id: casos[index]._id } });
+      console.log(resp);
+    }
+    catch (error) {
+      console.error('error!', error);
+    }
+  }
+
+  const deleteItem = (index) => () => {
+    setCasos((casos) => casos.filter((_, i) => i !== index));
+    Borrar(index);
+  }
 
   const insertarCasos = () => {
     let depar = [];
     if (casos !== undefined) {
       for (var i = 0; i < casos.length; i++) {
-        depar.push(<Caso key={i} data={casos[i]}/>)
+        depar.push(
+          <div className="Depa">
+            <Caso key={i} data={casos[i]}/>
+            <button className="button is-small is-danger is-light" onClick={deleteItem(i)}>Eliminar</button>
+          </div>
+        )
       }
     }
     return depar;

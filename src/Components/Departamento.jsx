@@ -11,19 +11,19 @@ function Departamento({ datos }) {
   };
 
   return (
-    <div className="Depa">
+    <>
       <p className="title is-1-small">Departamento {datos.dep_nombre}</p>
       <p className="subtitle">email:{datos.dep_email}</p>
       <p className="subtitle">tel:{datos.dep_telefono}</p>
       <p className="subtitle">Jefe {datos.dep_jefe}</p>
-      <button className="button is-danger" onClick={cambiar} >Modificar</button>
+      <button className="button is-link" onClick={cambiar} >Modificar</button>
       {
         visible ? (<ModalForm active={active} datos={datos}/>) : (console.log("false"))
       }
       <div>
 
       </div>
-    </div>
+    </>
 
   );
 

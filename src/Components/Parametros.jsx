@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../Styles/estilo.css';
-//import { useState } from 'react';
-//import { useEffect } from 'react';
+import Swal from 'sweetalert2';
+
 const Parametros = () => {
 
   const [data, setData] = useState({});
@@ -12,25 +12,27 @@ const Parametros = () => {
     try {
       const { data } = await axios.get('api/parametros/all');
       setData(data[0]);
+      if(data === undefined || data === null || Object.keys(data).length === 0){
+        Swal.fire({
+          title: 'Error!',
+          text: 'Fallo obteniendo los parametros',
+          icon: 'error',
+          timer:6000
+        })
+      }
     }
 
     catch (error) {
       console.error('error!', error);
-
+      Swal.fire({
+        title: 'Error!',
+        text: 'Fallo obteniendo los parametros',
+        icon: 'error',
+        timer:6000
+      })
     }
     console.log(data);
     console.log("Component has been rendered");
-  }
-  const GuardarParametros = async () => {
-    /*post de para metros
-    if(status===200){
-      recorrer lista de departamentos con un post para departamentos por cada item
-    }
-    
-    
-    */
-
-
   }
 
   useEffect(() => {
@@ -78,8 +80,23 @@ const Parametros = () => {
 
   const handleSubmit = () => {
      console.log(data);
-     let resp = axios.put('api/parametros/editar', data);               
+     let resp = axios.put('api/parametros/editar',data);               
      console.log(resp);
+
+     if (resp.status === 200){
+      Swal.fire({
+        title: 'Exito!',
+        icon: 'succes',
+        timer:6000
+      })
+     }else{
+      Swal.fire({
+        title: 'Error!',
+        text: 'Fallo actualizando los parametros',
+        icon: 'error',
+        timer:6000
+      })
+     }
   }
 
   const handleUpdate = (e) => {

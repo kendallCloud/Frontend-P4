@@ -1,12 +1,12 @@
 import React from "react";
 import '../Styles/estilo.css';
-function Tramite ({data}){
+function Tramite ({data,departa}){
 
     return(
     <>
 
         <h3 className="title is-3">{data.trm_nombre}</h3>
-        <h4 className="title is-4">{"realiza departamento de " + data.trm_departamento_cod}</h4>
+        <h4 className="title is-4">{"realiza departamento de " + departa}</h4>
         <div className="container">
 
             <div>

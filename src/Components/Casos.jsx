@@ -75,7 +75,7 @@ function Casos() {
 
     <div className="container">
       <header className="title is-size-1">
-        <center>Casos  registrados</center>
+        <center>Casos registrados</center>
         <div className="is flex" style={{}}>
           <input type="text" className="input" id="search" placeholder="Buscar" style={{ width: '25%' }} />
           <button className="button is-info" onClick={() => { setVisible(!visible); }}>Nuevo caso</button>

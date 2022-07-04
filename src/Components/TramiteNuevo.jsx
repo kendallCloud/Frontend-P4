@@ -68,37 +68,12 @@ function TramiteNuevo({ departas, setData }) {
 
 }
 
-function Tramite({ active }) {
+function Tramite({ active,departamentos}) {
 
   const [ver, setVer] = useState(active ? "is-active" : "");
-  const [departamentos, setDepartas] = useState([]);
-  const GetDepartamentos = async () => {
-    try {
-      const { data } = await axios.get('api/departamento/all');
-      if (data === undefined) {
-        Swal.fire({
-          title: 'Error!',
-          text: 'Fallo obteniendo los departamentos',
-          icon: 'error',
-          confirmButtonText: 'ok'
-        })
-      }
-      console.log(data);
-      setDepartas(data);
-    }
 
-    catch (error) {
-      Swal.fire({
-        title: 'Error!',
-        text: 'Fallo obteniendo los departamentos',
-        icon: 'error',
-        confirmButtonText: 'ok'
-      })
-      console.error('error!', error);
 
-    }
-    console.log("Component has been rendered");
-  }
+
 
   const [data, setData] = useState({
     trm_nombre: "",
@@ -129,10 +104,6 @@ function Tramite({ active }) {
     }
   }
 
-  useEffect(() => {
-    GetDepartamentos();
-  }, []);
-
   const cerrar = () => {
     ver === "" ? setVer("is-active") : setVer("")
   }
@@ -142,7 +113,7 @@ function Tramite({ active }) {
       <div className="modal-card">
         <header className="modal-card-head">
           <p className="modal-card-title">Modificar tramite</p>
-          <button className="delete" aria-label="close" />
+          <button className="delete" aria-label="close" onClick={cerrar}/>
         </header>
         <TramiteNuevo departas={departamentos} setData={setData}/>
         <footer className="modal-card-foot">

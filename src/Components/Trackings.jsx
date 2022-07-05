@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect} from 'react';
 import { DownloadOutlined } from '@ant-design/icons';
 import '../Styles/estilo.css';
 import Swal from 'sweetalert2';
@@ -8,17 +8,37 @@ import 'antd/dist/antd.min.css';
 
 const { Search } = Input;
 
-function TrackPiece({ estado, documento }) {
-    const [state,setState] = useState(3);
+function TrackPiece({documento,caso}) {
+    const [state,setState] = useState(2);
+
+    const getEstado = async () => {
+      try {
+        const response = await axios.get('/api/documento/existe',{
+          headers: {
+            caso:caso._id,
+            nombre:documento
+          }
+        });
+        console.log(response);
+        setState(response.data.estado);
+      }
+      catch (err) {}
+    }
+
+   useEffect(() => {
+    getEstado();
+   },[])
 
   const uploadFile = async (file) => {
     console.log("subiendo archivo...");
     let formData = new FormData();
     formData.append("file", file);
     try {
-      const response = await axios.post('/api/documento/upload', formData, {
+      const response = await axios.post('/api/documento/upload', formData,{
         headers: {
           "Content-Type": "multipart/form-data",
+          caso:caso._id,
+          nombre_doc:documento
         }
       });
 
@@ -112,7 +132,7 @@ function TrackPiece({ estado, documento }) {
   return (
     <div className="TrackNode" style={colores}>
 
-      <img src="https://cdn-icons-png.flaticon.com/128/569/569800.png" style={{ cursor: "pointer" }} onClick={() => { SetFile() }} width={100} height={100} alt="archivo" />
+      <img src="https://cdn-icons-png.flaticon.com/128/569/569800.png" style={{ cursor: "pointer" }} onClick={() => { SetFile(documento) }} width={100} height={100} alt="archivo" />
       <h1 className="title">{documento}</h1>
       <div>
         <img src={estImagen} width={50} height={50} alt="estado" />
@@ -201,7 +221,7 @@ function Trackings() {
     let document = [];
     if (tramite !== {} && tramite.trm_documentos !== undefined) {
       tramite.trm_documentos.forEach(element => {
-        document.push(<TrackPiece estado={3} documento={element} />);
+        document.push(<TrackPiece estado={3} documento={element} caso={caso}/>);
       });
     }
     return document;
